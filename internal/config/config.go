@@ -24,9 +24,11 @@ type Config struct {
 	Samples     int
 	Symmetry    int
 	Transitions []int
+	Correction  float64
+	Format      string
 }
 
-func NewConfig(settings []int, trans string) (*Config, error) {
+func NewConfig(settings []int, corr float64, trans, format string) (*Config, error) {
 	for _, val := range settings {
 		if val < 0 {
 			return nil, errors.NewErrInvalidIntegerFlag()
@@ -44,6 +46,10 @@ func NewConfig(settings []int, trans string) (*Config, error) {
 		transitions = append(transitions, converted)
 	}
 
+	if format != "jpeg" && format != "png" {
+		format = "jpeg"
+	}
+
 	return &Config{
 		Width:       settings[0],
 		Height:      settings[1],
@@ -52,5 +58,7 @@ func NewConfig(settings []int, trans string) (*Config, error) {
 		N:           settings[4],
 		Symmetry:    settings[5],
 		Transitions: transitions,
+		Correction:  corr,
+		Format:      format,
 	}, nil
 }
