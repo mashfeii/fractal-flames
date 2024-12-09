@@ -9,6 +9,10 @@
 *.dylib
 bin
 
+*.png
+*.jpg
+*.jpeg
+
 # Test binary, built with `go test -c`
 *.test
 
