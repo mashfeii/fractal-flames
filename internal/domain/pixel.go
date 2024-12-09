@@ -1,5 +1,7 @@
 package domain
 
+import "math"
+
 type FractalPixel interface {
 	Hitted() bool
 	Hit()
@@ -7,8 +9,9 @@ type FractalPixel interface {
 }
 
 type Pixel struct {
-	R, G, B  uint8
-	HitCount uint
+	R, G, B    uint8
+	hitCount   uint
+	normalized float64
 }
 
 func (p Pixel) RGBA() (r, g, b, a uint32) {
@@ -25,15 +28,28 @@ func (p Pixel) RGBA() (r, g, b, a uint32) {
 }
 
 func (p Pixel) Hitted() bool {
-	return p.HitCount != 0
+	return p.hitCount != 0
 }
 
 func (p *Pixel) Hit() {
-	p.HitCount++
+	p.hitCount++
 }
 
 func (p *Pixel) SetColor(r, g, b uint8) {
 	p.R = r
 	p.G = g
 	p.B = b
+}
+
+func (p *Pixel) Normalize() float64 {
+	p.normalized = math.Log10(float64(p.hitCount))
+
+	return p.normalized
+}
+
+func (p *Pixel) Correction(coeff, gamma float64) {
+	p.normalized /= coeff
+	p.R = uint8(float64(p.R) * math.Pow(p.normalized, 1.0/gamma))
+	p.G = uint8(float64(p.G) * math.Pow(p.normalized, 1.0/gamma))
+	p.B = uint8(float64(p.B) * math.Pow(p.normalized, 1.0/gamma))
 }

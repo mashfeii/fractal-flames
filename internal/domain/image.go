@@ -12,6 +12,12 @@ type FractalImage struct {
 	canvas image.Rectangle
 }
 
+type Fractal interface {
+	image.Image
+	GetPixel(x, y int) *Pixel
+	Contains(x, y int) bool
+}
+
 func NewFractalImage(width, height int) *FractalImage {
 	return &FractalImage{
 		width:  width,
