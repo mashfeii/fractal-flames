@@ -8,6 +8,8 @@ build:
 	@mkdir -p .bin
 	@go build -o ./bin/${TARGET} ./cmd/${TARGET}
 
+bench:
+	@go test ./internal/application/ -bench=. 
 ## test: run all tests
 .PHONY: test
 test:
