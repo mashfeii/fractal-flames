@@ -87,3 +87,44 @@ func (h *Hyperbolic) Convert(x, y float64) (newX, newY float64) {
 
 	return math.Sin(theta) / r, r * math.Cos(theta)
 }
+
+type Ex struct{}
+
+func (h *Ex) Convert(x, y float64) (newX, newY float64) {
+	r := math.Sqrt(x*x + y*y)
+	theta := math.Atan2(x, y)
+
+	p0 := math.Sin(theta + r)
+	p1 := math.Cos(theta - r)
+
+	return r * (math.Pow(p0, 3) + math.Pow(p1, 3)), r * (math.Pow(p0, 3) - math.Pow(p1, 3))
+}
+
+type Julia struct{}
+
+func (h *Julia) Convert(x, y float64) (newX, newY float64) {
+	r := math.Sqrt(math.Sqrt(x*x + y*y))
+	theta := math.Atan2(x, y)
+	phi := math.Atan2(y, x)
+
+	p0 := math.Cos(theta/2 + phi)
+	p1 := math.Sin(theta/2 + phi)
+
+	return r * p0, r * p1
+}
+
+type Fisheye struct{}
+
+func (h *Fisheye) Convert(x, y float64) (newX, newY float64) {
+	r := 2 / (math.Sqrt(x*x+y*y) + 1)
+
+	return r * y, r * x
+}
+
+type Eyefish struct{}
+
+func (h *Eyefish) Convert(x, y float64) (newX, newY float64) {
+	r := 2 / (math.Sqrt(x*x+y*y) + 1)
+
+	return r * x, r * y
+}

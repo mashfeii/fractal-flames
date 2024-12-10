@@ -9,7 +9,7 @@ func NewErrInvalidIntegerFlag() error {
 }
 
 func (e ErrInvalidIntegerFlag) Error() string {
-	return "Negative values is not allowed"
+	return "Flag value should be greater than 0"
 }
 
 type ErrEmptyTransitions struct {
