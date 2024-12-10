@@ -27,7 +27,7 @@ func (a *App) generateCoeffs() {
 
 		for i := 0; i != 3; i++ {
 			if a.settings.Colors[i] != -1 {
-				newCoeff.Color[i] = uint8(a.settings.Colors[i])
+				newCoeff.Color[i] = uint8(a.settings.Colors[i]) //nolint
 			} else {
 				newCoeff.Color[i] = uint8(pkg.GetRandomFloat(64, 255))
 			}

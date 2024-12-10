@@ -9,14 +9,18 @@ import (
 )
 
 func BenchmarkAlgorithmParallel_5000(b *testing.B) {
-	settings, _ := config.NewConfig([]int{
+	settings, _ := config.NewConfig([6]int{
 		1920,
 		1080,
 		5000,
 		20000,
 		1,
 		12,
-	}, 2.2, "", "png")
+	},
+		[3]int{
+			-1, -1, -1,
+		},
+		2.2, "", "png")
 
 	err := application.Run(settings)
 
@@ -24,44 +28,56 @@ func BenchmarkAlgorithmParallel_5000(b *testing.B) {
 }
 
 func BenchmarkAlgorithmSingle_5000(b *testing.B) {
-	settings, _ := config.NewConfig([]int{
+	settings, _ := config.NewConfig([6]int{
 		1920,
 		1080,
 		5000,
 		20000,
 		1,
 		1,
-	}, 2.2, "", "png")
+	},
+		[3]int{
+			-1, -1, -1,
+		},
+		2.2, "", "png")
 
 	err := application.Run(settings)
 
 	assert.NoError(b, err)
 }
 
-func BenchmarkAlgorithmParallel_20000(b *testing.B) {
-	settings, _ := config.NewConfig([]int{
+func BenchmarkAlgorithmParallel_10000(b *testing.B) {
+	settings, _ := config.NewConfig([6]int{
 		1920,
 		1080,
-		20000,
+		10000,
 		20000,
 		1,
 		12,
-	}, 2.2, "", "png")
+	},
+		[3]int{
+			-1, -1, -1,
+		},
+		2.2, "", "png")
 
 	err := application.Run(settings)
 
 	assert.NoError(b, err)
 }
 
-func BenchmarkAlgorithmSingle_20000(b *testing.B) {
-	settings, _ := config.NewConfig([]int{
+func BenchmarkAlgorithmSingle_10000(b *testing.B) {
+	settings, _ := config.NewConfig([6]int{
 		1920,
 		1080,
-		20000,
+		10000,
 		20000,
 		1,
 		1,
-	}, 2.2, "", "png")
+	},
+		[3]int{
+			-1, -1, -1,
+		},
+		2.2, "", "png")
 
 	err := application.Run(settings)
 
