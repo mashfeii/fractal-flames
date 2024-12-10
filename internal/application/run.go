@@ -6,11 +6,12 @@ func Run(settings *config.Config) error {
 	app := App{
 		settings: settings,
 	}
-	app.generateCoeffs()
 
 	if err := app.collectTransitions(); err != nil {
 		return err
 	}
+
+	app.generateCoeffs()
 
 	generatedImage := app.render()
 
