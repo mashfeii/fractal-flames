@@ -43,7 +43,7 @@ func (a *App) render() domain.Fractal {
 	picture := domain.NewFractalImage(a.settings.Width, a.settings.Height)
 	routinesGroup := sync.WaitGroup{}
 
-	for i := 0; i < a.settings.Samples/a.settings.Threads; i++ {
+	for i := 0; i < a.settings.Threads; i++ {
 		routinesGroup.Add(1)
 
 		go func() {
@@ -58,41 +58,43 @@ func (a *App) render() domain.Fractal {
 }
 
 func (a *App) renderStep(picture *domain.FractalImage) {
-	// NOTE: Take new point from the canvas
-	newX := pkg.GetRandomFloat(config.XMin, config.XMax)
-	newY := pkg.GetRandomFloat(config.YMin, config.YMax)
+	for i := 0; i < a.settings.Samples; i++ {
+		// NOTE: Take new point from the canvas
+		newX := pkg.GetRandomFloat(config.XMin, config.XMax)
+		newY := pkg.GetRandomFloat(config.YMin, config.YMax)
 
-	for j := -20; j < a.settings.ItNum; j++ {
-		// NOTE: Take the next transformation
-		choice := rand.IntN(len(a.transitions)) //nolint
+		for j := -20; j < a.settings.ItNum; j++ {
+			// NOTE: Take the next transformation
+			choice := rand.IntN(len(a.transitions)) //nolint
 
-		newX, newY = a.iterate(choice, newX, newY)
+			newX, newY = a.iterate(choice, newX, newY)
 
-		// NOTE: Skip first iterations to find the center
-		if j < 0 {
-			continue
-		}
-
-		theta2 := 0.0
-
-		for s := 0; s < a.settings.Symmetry; s++ {
-			var x1, y1 int
-
-			// NOTE: Apply symmetry (rotation)
-			theta2 += ((2.0 * math.Pi) / float64(a.settings.Symmetry))
-			xRot := newX*math.Cos(theta2) - newY*math.Sin(theta2)
-			yRot := newX*math.Sin(theta2) + newY*math.Cos(theta2)
-
-			if xRot >= config.XMin && xRot <= config.XMax && yRot >= config.YMin && yRot <= config.YMax {
-				x1 = int(float64(a.settings.Width) - ((float64(config.XMax)-xRot)/config.XRange)*float64(a.settings.Width))
-				y1 = int(float64(a.settings.Height) - ((float64(config.YMax)-yRot)/config.YRange)*float64(a.settings.Height))
+			// NOTE: Skip first iterations to find the center
+			if j < 0 {
+				continue
 			}
 
-			// NOTE: "Plot picture" -> Set pixel color based on hit count
-			if picture.Contains(x1, y1) {
-				a.mutex.Lock()
-				a.drawPixel(picture, choice, x1, y1)
-				a.mutex.Unlock()
+			theta2 := 0.0
+
+			for s := 0; s < a.settings.Symmetry; s++ {
+				var x1, y1 int
+
+				// NOTE: Apply symmetry (rotation)
+				theta2 += ((2.0 * math.Pi) / float64(a.settings.Symmetry))
+				xRot := newX*math.Cos(theta2) - newY*math.Sin(theta2)
+				yRot := newX*math.Sin(theta2) + newY*math.Cos(theta2)
+
+				if xRot >= config.XMin && xRot <= config.XMax && yRot >= config.YMin && yRot <= config.YMax {
+					x1 = int(float64(a.settings.Width) - ((float64(config.XMax)-xRot)/config.XRange)*float64(a.settings.Width))
+					y1 = int(float64(a.settings.Height) - ((float64(config.YMax)-yRot)/config.YRange)*float64(a.settings.Height))
+				}
+
+				// NOTE: "Plot picture" -> Set pixel color based on hit count
+				if picture.Contains(x1, y1) {
+					a.mutex.Lock()
+					a.drawPixel(picture, choice, x1, y1)
+					a.mutex.Unlock()
+				}
 			}
 		}
 	}
