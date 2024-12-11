@@ -14,8 +14,7 @@ func main() {
 	height := flag.Int("h", 1080, "Height for the future picture")
 	samples := flag.Int("s", 20000, "Number of samples to generate picture")
 	iterations := flag.Int("i", 1000, "Number of iterations per sample")
-	// TODO: Deal with single transformation
-	/* coeffVectors := flag.Int("n", 20, "Number of random vectors of coefficients") */ //nolint
+	coeffVectors := flag.Int("n", 20, "Number of random vectors of coefficients")
 	symmetry := flag.Int("sym", 1, "Number of symmetry axis")
 	threads := flag.Int("t", 12, "Number of threads")
 	transitions := flag.String("tr", "", "List of transitions separated by comma (\"1,2,3\")")
@@ -28,13 +27,14 @@ func main() {
 	flag.Parse()
 
 	settings, err := config.NewConfig(
-		[6]int{
+		[7]int{
 			*width,
 			*height,
 			*iterations,
 			*samples,
 			*symmetry,
 			*threads,
+			*coeffVectors,
 		},
 		[3]int{
 			*r, *g, *b,
