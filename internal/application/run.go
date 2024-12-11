@@ -1,6 +1,9 @@
 package application
 
-import "github.com/es-debug/backend-academy-2024-go-template/internal/config"
+import (
+	"github.com/es-debug/backend-academy-2024-go-template/internal/config"
+	"github.com/es-debug/backend-academy-2024-go-template/internal/infrastructure/output"
+)
 
 func Run(settings *config.Config) error {
 	app := App{
@@ -19,7 +22,7 @@ func Run(settings *config.Config) error {
 		app.correction(generatedImage)
 	}
 
-	if err := app.save(generatedImage); err != nil {
+	if err := output.Save(settings.Format, generatedImage); err != nil {
 		return err
 	}
 

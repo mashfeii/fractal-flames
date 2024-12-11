@@ -1,15 +1,8 @@
 package application
 
 import (
-	"fmt"
-	"image"
-	"image/jpeg"
-	"image/png"
 	"math"
 	"math/rand/v2"
-	"os"
-	"path/filepath"
-	"strings"
 	"sync"
 
 	"github.com/es-debug/backend-academy-2024-go-template/internal/config"
@@ -121,50 +114,4 @@ func (a *App) correction(picture domain.Fractal) {
 			picture.GetPixel(x, y).Correction(maxNormalized, a.settings.Correction)
 		}
 	}
-}
-
-func (a *App) save(picture image.Image) error {
-	if err := os.MkdirAll(filepath.Join(".", "results"), os.ModePerm); err != nil {
-		return err
-	}
-
-	entities, err := os.ReadDir("results/")
-	if err != nil {
-		return err
-	}
-
-	counter := 0
-
-	for _, entity := range entities {
-		if strings.Contains(entity.Name(), "fractal") {
-			counter++
-		}
-	}
-
-	path := "results/fractal." + a.settings.Format
-	if counter > 0 {
-		path = fmt.Sprintf("results/fractal-%d.%s", counter, a.settings.Format)
-	}
-
-	file, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-
-	switch a.settings.Format {
-	case "jpeg":
-		if err := jpeg.Encode(file, picture, nil); err != nil {
-			return err
-		}
-	default:
-		if err := png.Encode(file, picture); err != nil {
-			return err
-		}
-	}
-
-	if err := file.Close(); err != nil {
-		return err
-	}
-
-	return nil
 }
