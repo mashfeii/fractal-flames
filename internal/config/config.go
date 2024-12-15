@@ -17,12 +17,12 @@ const (
 )
 
 type Config struct {
-	Width    int
-	Height   int
-	ItNum    int
-	Samples  int
-	Symmetry int
-	Threads  int
+	Width       int
+	Height      int
+	ItNum       int
+	Samples     int
+	Symmetry    int
+	Threads     int
 	NumVectors  int
 	Transitions []int
 	Colors      [3]int
