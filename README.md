@@ -1,16 +1,31 @@
-# Шаблон Go-проекта для домашних заданий
+# Fractal Flames
 
-Шаблон для домашних заданий [Академии Бэкенда 2024](https://edu.tinkoff.ru/all-activities/courses/870efa9d-7067-4713-97ae-7db256b73eab).
+Simple fractal flames generator in Go.
 
-Цель данного репозитория – познакомить вас с процессом разработки приложений на Go с использованием наиболее распространенных практик, инструментов и библиотек.
+## Usage
 
-## Структура проекта
+Project contains Makefile to build and run the project.
 
-Это шаблон проекта, основанный на лучших практиках структурирования Go кода приложения. Проект содержит в себе следующие компоненты:
+- `make build` - build the project
+- `make bench` - run the benchmark (single vs multithreaded)
+- `make clean` - clean results' directory
 
-- `cmd` – директория, содержащая исполняемые файлы приложения. В данном шаблоне есть только один исполняемый файл `run`, который запускает приложение. Хорошей практикой является название пакета, содержащего `main.go` так же, как и название исполняемого файла. Таким образом в каждом домашнем задании вам будет необходимо изменять название пакета `run` на название, подходящее для вашего приложения.
-- `internal` – директория, содержащая внутренние пакеты приложения. Внутренние пакеты не могут быть импортированы другими пакетами вне проекта.
-  - `application` - пакет, в котором содержатся юзкейсы приложения.
-  - `domain` - пакет, в котором содержатся модели приложения.
-  - `infrastructure` - пакет, в котором содержатся инфраструктурные компоненты приложения(работа с выводом пользователю, работа с диском, работа с сетью и т.д.).
-- `pkg` – директория, содержащая пакеты, которые могут быть импортированы другими пакетами вне проекта. Общей рекомендацией является то, что пакеты, содержащиеся в `pkg` должны быть независимыми от остальных пакетов проекта.
+All the images are saved in the `results` directory. Program can be run multiple times at a time to generate several images.
+
+### Usage flags
+
+- `-w` - width of the image
+- `-h` - height of the image
+- `-tr` - list of transitions separated by comma ("1,2,3")
+- `-n` - number of random vectors with coefficients and colors
+- `-i` - number of iterations per sample
+- `-s` - number of samples to generate picture
+- `-g` - gamma correction coefficient
+- `-sym` - number of symmetry axis
+- `-t` - number of threads
+- `-f` - format (png/jpeg)
+- `-re` - static red channel value
+- `-gr` - static green channel value
+- `-bl` - static blue channel value
+
+Example: `make build && ./bin/fractal_flame -n 30 -w 1000 -h 1000 -t 2 -tr 6,12,13`
