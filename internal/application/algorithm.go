@@ -10,7 +10,7 @@ import (
 	"github.com/es-debug/backend-academy-2024-go-template/pkg"
 )
 
-func (a *App) iterate(choice int, x, y float64) (newX, newY float64) {
+func (a *App) iterate(choice, trans int, x, y float64) (newX, newY float64) {
 	affineCoeffs := a.coeffs[choice].Affine
 
 	// NOTE: Apply vector coefficient
@@ -18,7 +18,7 @@ func (a *App) iterate(choice int, x, y float64) (newX, newY float64) {
 	Ycoeff := affineCoeffs[3]*x + affineCoeffs[4]*y + affineCoeffs[5]
 
 	// NOTE: Apply transformation
-	return a.transitions[choice].Convert(Xcoeff, Ycoeff)
+	return a.transitions[trans].Convert(Xcoeff, Ycoeff)
 }
 
 func (a *App) drawPixel(pic *domain.FractalImage, coeffs, x1, y1 int) {
@@ -58,9 +58,10 @@ func (a *App) renderStep(picture *domain.FractalImage) {
 
 		for j := -20; j < a.settings.ItNum; j++ {
 			// NOTE: Take the next transformation
-			choice := rand.IntN(len(a.transitions)) //nolint
+			trans := rand.IntN(len(a.transitions)) //nolint
+			choice := rand.IntN(len(a.coeffs))
 
-			newX, newY = a.iterate(choice, newX, newY)
+			newX, newY = a.iterate(choice, trans, newX, newY)
 
 			// NOTE: Skip first iterations to find the center
 			if j < 0 {

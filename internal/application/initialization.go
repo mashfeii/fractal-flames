@@ -18,7 +18,7 @@ type App struct {
 }
 
 func (a *App) generateCoeffs() {
-	for i := 0; i < len(a.transitions); i++ {
+	for i := 0; i < a.settings.NumVectors; i++ {
 		newCoeff := domain.Coeff{}
 
 		for i := 0; i != 6; i++ {

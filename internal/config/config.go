@@ -17,20 +17,20 @@ const (
 )
 
 type Config struct {
-	Width    int
-	Height   int
-	ItNum    int
-	Samples  int
-	Symmetry int
-	Threads  int
-	// NumVectors  int
+	Width       int
+	Height      int
+	ItNum       int
+	Samples     int
+	Symmetry    int
+	Threads     int
+	NumVectors  int
 	Transitions []int
 	Colors      [3]int
 	Correction  float64
 	Format      string
 }
 
-func NewConfig(settings [6]int, colors [3]int, corr float64, trans, format string) (*Config, error) {
+func NewConfig(settings [7]int, colors [3]int, corr float64, trans, format string) (*Config, error) {
 	for _, val := range settings {
 		if val <= 0 {
 			return nil, errors.NewErrInvalidIntegerFlag()
@@ -67,10 +67,10 @@ func NewConfig(settings [6]int, colors [3]int, corr float64, trans, format strin
 		Samples:     settings[3],
 		Symmetry:    settings[4],
 		Threads:     settings[5],
+		NumVectors:  settings[6],
 		Colors:      colors,
 		Transitions: transitions,
 		Correction:  corr,
 		Format:      format,
-		// NumVectors:  settings[6],
 	}, nil
 }
